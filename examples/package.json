@@ -1,0 +1,32 @@
+{
+  "name": "pikimerin-sample",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build"
+  },
+  "dependencies": {
+    "@kotonone/pikimerin": "link:..",
+    "vue": "^3.5.24"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "npm-run-all2": "^8.0.4",
+    "sass-embedded": "^1.93.3",
+    "typescript": "~5.9.3",
+    "vite": "npm:rolldown-vite@^7.2.5",
+    "vite-plugin-vue-devtools": "^8.0.3",
+    "vue-tsc": "^3.1.3"
+  }
+}

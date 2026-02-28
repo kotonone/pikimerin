@@ -1,0 +1,19 @@
+{
+    "name": "@kotonone/pikimerin",
+    "version": "0.1.0",
+    "license": "(MIT OR Apache-2.0)",
+    "main": "dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "rollup -c",
+        "dev": "rollup -c -w"
+    },
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^12.1.4",
+        "rollup": "^4.44.1",
+        "rollup-plugin-dts": "^6.2.1",
+        "tslib": "^2.8.1"
+    }
+}

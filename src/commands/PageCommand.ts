@@ -1,4 +1,4 @@
-import { TextContext } from "../core/Context";
+import type { TextContext } from "../core/Context";
 
 export function page(context: TextContext): void {
     context.container.textContent = "";

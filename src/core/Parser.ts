@@ -1,5 +1,5 @@
 import { getCommandsFromLine, splitArguments } from "../utils/Parse";
-import { Command } from "../commands/Command";
+import type { Command } from "../commands/Command";
 import { AmeriScriptError, IndentError } from "./Error";
 
 /**

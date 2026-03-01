@@ -1,4 +1,4 @@
-import { TextContext } from "../core/Context";
+import type { TextContext } from "../core/Context";
 import { splitTextToElement } from "../utils/Parse";
 import { AbortablePromise, wait } from "../utils/Promise";
 

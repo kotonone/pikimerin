@@ -1,4 +1,4 @@
-import { PictureContext } from "../Context";
+import type { PictureContext } from "../Context";
 
 export class Renderer {
     readonly #context: Readonly<PictureContext>;

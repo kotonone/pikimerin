@@ -1,6 +1,6 @@
 import { text } from "../commands/TextCommand";
 import { Context } from "./Context";
-import { Command } from "../commands/Command";
+import type { Command } from "../commands/Command";
 import { pause } from "../commands/PauseCommand";
 import { sleep } from "../commands/SleepCommand";
 import { fontSize } from "../commands/FontSizeCommand";

@@ -1,4 +1,4 @@
-import { TextContext } from "../core/Context";
+import type { TextContext } from "../core/Context";
 
 export function fontColor(context: TextContext, color: string): void {
     if (color.includes("-gradient")) {

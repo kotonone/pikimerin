@@ -1,0 +1,34 @@
+/* ヘッダーロゴ */
+:root {
+    --vp-nav-logo-height: 40px;
+}
+.VPNavBar .logo + span {
+    display: none;
+}
+
+/* Hero セクションの背景 */
+.VPNav {
+    background-color: rgba(from var(--vp-nav-bg-color) r g b / 50%);
+    backdrop-filter: blur(10px);
+}
+.VPHero {
+    position: relative;
+
+    min-height: 70vh;
+}
+.VPHero::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-image: url("assets/background.webp");
+    background-size: cover;
+    background-position: center;
+    /* filter: blur(5px) opacity(80%); */
+    opacity: 0.8;
+}
+.VPHero .tagline {
+    color: #404040;
+}

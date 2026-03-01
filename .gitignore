@@ -2,6 +2,7 @@
 node_modules
 dist
 .rollup.cache
+/docs/.vitepress/cache
 
 # Ignore development files
 /files

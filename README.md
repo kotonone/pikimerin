@@ -1,4 +1,4 @@
-<h1><img src="./docs/assets/logo@4x.webp" alt="Pikimerin" width="208" height="64"></h1>
+<h1><img src="./docs/public/assets/logo@4x.webp" alt="Pikimerin" width="208" height="64"></h1>
 
 Pikimerin は、Kotonone によって開発されている、ビジュアルノベルなどのシナリオを直感的に記述できるスクリプト言語 AmeriScript のスクリプト再生エンジンです。
 

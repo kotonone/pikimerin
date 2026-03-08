@@ -16,22 +16,46 @@ export default defineConfig({
         },
 
         socialLinks: [
-            { icon: "github", link: "https://github.com/kotonone/pikimerin" }
+            { icon: "github", link: "https://github.com/kotonone/pikimerin" },
         ],
 
         nav: [
-            { text: "Home", link: "/" },
-            { text: "Examples", link: "/markdown-examples" }
+            { text: "ホーム", link: "/" },
+            { text: "ガイド", link: "/guide/getting-started" },
+            { text: "サンプル", link: "https://kotonone.github.io/pikimerin/examples/" },
         ],
 
         sidebar: [
             {
-                text: "Examples",
+                text: "ガイド",
                 items: [
-                    { text: "Markdown Examples", link: "/markdown-examples" },
-                    { text: "Runtime API Examples", link: "/api-examples" }
+                    { text: "はじめての Pikimerin", link: "/guide/getting-started" },
+                ]
+            },
+            {
+                text: "リファレンス",
+                items: [
+                    { text: "インラインコマンド", link: "/reference/inline-commands" },
+                    { text: "非同期処理と中断", link: "/reference/asynchronous" },
+                    {
+                        text: "コマンド一覧",
+                        collapsed: true,
+                        items: [
+                            { text: "@text", link: "/reference/commands/text" },
+                            { text: "@pause", link: "/reference/commands/pause" },
+                            { text: "@page", link: "/reference/commands/page" },
+                            { text: "@sleep", link: "/reference/commands/sleep" },
+                            { text: "@font.color", link: "/reference/commands/font-color" },
+                            { text: "@font.size", link: "/reference/commands/font-size" },
+                        ]
+                    },
                 ]
             }
         ],
+
+        footer: {
+            message: "Released under the MIT License or the Apache License version 2.0.",
+            copyright: "© Kotonone",
+        }
     }
 });

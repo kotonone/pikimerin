@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -63,5 +64,14 @@ export default defineConfig({
             message: "Released under the MIT License or the Apache License version 2.0.",
             copyright: "© Kotonone",
         }
-    }
+    },
+
+    vite: {
+        plugins: [groupIconVitePlugin()],
+    },
+    markdown: {
+        config(md) {
+            md.use(groupIconMdPlugin);
+        },
+    },
 });

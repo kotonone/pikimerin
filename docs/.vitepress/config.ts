@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+    base: "/pikimerin/",
     title: "Pikimerin",
 
     description: "A lightweight scenario engine for web-based visual novels",

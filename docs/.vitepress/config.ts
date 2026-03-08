@@ -6,6 +6,11 @@ export default defineConfig({
     title: "Pikimerin",
 
     description: "A lightweight scenario engine for web-based visual novels",
+    head: [
+        ["meta", { property: "og:site_name", content: "Pikimerin" }],
+        ["meta", { property: "og:image", content: "https://kotonone.github.io/pikimerin/assets/ogp.webp" }],
+    ],
+
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
 

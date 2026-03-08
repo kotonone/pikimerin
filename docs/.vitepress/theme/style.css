@@ -1,6 +1,30 @@
+/* ブランドカラー */
+:root {
+    --vp-c-brand-1: hsl(19, 100%, 83%);
+    --vp-c-brand-2: hsl(19, 74%, 63%);
+    --vp-c-brand-3: hsl(19, 70%, 55%);
+    --vp-c-brand-soft: hsla(19, 100%, 70%, 0.16);
+    --background-image: url("data:image/webp;base64,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");
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0px;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    filter: blur(3px);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+}
+
 /* ヘッダーロゴ */
 :root {
     --vp-nav-logo-height: 40px;
+    --vp-nav-bg-color: transparent;
+    --vp-sidebar-bg-color: rgba(from var(--vp-c-bg-alt) r g b / 20%)
 }
 .VPNavBar .logo + span {
     display: none;
@@ -8,14 +32,13 @@
 
 /* Hero セクションの背景 */
 .VPNav {
-    background-color: rgba(from var(--vp-nav-bg-color) r g b / 50%);
     backdrop-filter: blur(10px);
+}
+.dark .VPNav {
+    background-color: rgba(from var(--vp-nav-bg-color) r g b / 50%);
 }
 .VPHero {
     position: relative;
-
-    min-height: 50vh;
-
     margin-bottom: 2em;
 }
 .VPHero::before {
@@ -25,19 +48,17 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background-image: linear-gradient(to bottom, transparent, var(--vp-c-bg)), url("/pikimerin/assets/background.webp");
+    background-image: var(--background-image);
     background-size: cover;
     background-position: center;
-    filter: blur(4px) opacity(90%);
+    mask-image: linear-gradient(to bottom, #ffffff, transparent);
+    filter: blur(4px);
     overflow: hidden;
-    opacity: 0.8;
     pointer-events: none;
 }
 .VPHero .tagline {
     color: #808080;
 }
-@media (prefers-color-scheme: dark) {
-    .VPHero .tagline {
-        color: #c0c0c0;
-    }
+.dark .VPHero .tagline {
+    color: #c0c0c0;
 }

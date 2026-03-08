@@ -28,7 +28,7 @@ export default defineConfig({
 
         nav: [
             { text: "ホーム", link: "/" },
-            { text: "ガイド", link: "/guide/getting-started" },
+            { text: "ガイド", link: "/guide/quick-start" },
             { text: "サンプル", link: "https://kotonone.github.io/pikimerin/examples/" },
         ],
 
@@ -36,7 +36,9 @@ export default defineConfig({
             {
                 text: "ガイド",
                 items: [
-                    { text: "はじめての Pikimerin", link: "/guide/getting-started" },
+                    { text: "クイックスタート", link: "/guide/quick-start" },
+                    { text: "はじめての Pikimerin", link: "/guide/tutorial-pikimerin" },
+                    { text: "はじめての AmeriScript", link: "/guide/tutorial-ameriscript" },
                 ]
             },
             {

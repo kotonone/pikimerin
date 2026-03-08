@@ -7,8 +7,8 @@ hero:
   tagline: "Web 基盤ビジュアルノベル向け\n軽量ノベルゲームエンジン"
   actions:
     - theme: brand
-      text: ガイド
-      link: /guide/getting-started
+      text: はじめよう
+      link: /guide/quick-start
     - theme: alt
       text: サンプル
       link: https://kotonone.github.io/pikimerin/examples/

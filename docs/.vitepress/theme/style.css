@@ -25,7 +25,7 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background-image: linear-gradient(to bottom, transparent, var(--vp-c-bg)), url("assets/background.webp");
+    background-image: linear-gradient(to bottom, transparent, var(--vp-c-bg)), url("/pikimerin/assets/background.webp");
     background-size: cover;
     background-position: center;
     filter: blur(4px) opacity(90%);

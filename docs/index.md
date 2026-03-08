@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: '<img src="assets/logo@4x.webp" width="208" height="64" alt="Pikimerin" />'
+  name: '<img src="/pikimerin/assets/logo@4x.webp" width="208" height="64" alt="Pikimerin" />'
   text: ""
   tagline: "Web 基盤ビジュアルノベル向け\n軽量ノベルゲームエンジン"
   actions:

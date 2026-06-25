@@ -46,7 +46,7 @@ export class TextContext {
     public speed: number;
 
     /** 中間表現の配列 */
-    public ir: TextIR[] = [];
+    private ir: TextIR[] = [];
 
     public constructor(speed: number = 20) {
         const container = document.createElement("div");

@@ -69,21 +69,3 @@ export function splitArguments(content: string, splitter: string = SPLITTER_CHAR
             .replace(/\\e\d+;/g, s => escapes[parseInt(s.slice(2, -1))] ?? "")
         );
 }
-
-/**
- * 指定されたテキストを span 要素に変換します。
- * @param text
- */
-export function splitTextToElement(text: string): HTMLElement[] {
-    let elements = [];
-    for (const char of text) {
-        if (char === "\n") {
-            elements.push(document.createElement("br"));
-        } else {
-            const element = document.createElement("span");
-            element.textContent = char;
-            elements.push(element);
-        }
-    }
-    return elements;
-}

@@ -1,3 +1,4 @@
+import { TextContext } from "./context/TextContext";
 import { Layer } from "./picture/Layer";
 
 /** シナリオの再生時における環境情報 */
@@ -15,14 +16,7 @@ export class Context {
     private stack: number[];
 
     public constructor() {
-        const textContainer = document.createElement("div");
-        this.text = {
-            container: textContainer,
-            style: document.createElement("span").style,
-            speed: 20,
-        };
-        textContainer.style.display = "inline";
-        textContainer.style.lineHeight = "1";
+        this.text = new TextContext(20);
 
         this.picture = {
             canvas: document.createElement("canvas"),
@@ -42,12 +36,10 @@ export class Context {
         this.stack[this.stack.length - 1] = value;
     }
 
+    /** JSON 形式にシリアライズします。 */
     public toJSON() {
         return {
-            text: {
-                style: this.text.style.all,
-                speed: this.text.speed,
-            },
+            text: this.text.toJSON(),
             picture: {
                 layers: this.picture.layers,
             },
@@ -55,18 +47,6 @@ export class Context {
             stack: this.stack,
         };
     }
-}
-
-/** テキストが要求するコンテキスト */
-export interface TextContext {
-    /** テキストコンテナ */
-    container: ParentNode;
-
-    /** テキストの CSS 定義 */
-    style: CSSStyleDeclaration;
-
-    /** 文字速度 [文字/秒] */
-    speed: number;
 }
 
 /** ピクチャが要求するコンテキスト */

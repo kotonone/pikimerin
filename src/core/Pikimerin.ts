@@ -5,6 +5,7 @@ import { pause } from "../commands/PauseCommand";
 import { sleep } from "../commands/SleepCommand";
 import { fontSize } from "../commands/FontSizeCommand";
 import { fontColor } from "../commands/FontColorCommand";
+import { fontFamily } from "../commands/FontFamilyCommand";
 import { page } from "../commands/PageCommand";
 import { AbortablePromise } from "../utils/Promise";
 import { parseContent } from "./Parser";
@@ -31,7 +32,8 @@ const DEFAULT_COMMAND_SET = {
     page,
     sleep,
     "font.color": fontColor,
-    "font.size": fontSize
+    "font.size": fontSize,
+    "font.family": fontFamily,
 };
 
 export interface PikimerinInit {
@@ -101,6 +103,8 @@ export class Pikimerin extends EventTarget {
                     return this.commands["font.color"](this.context.text, command[1] ?? "");
                 } else if (command[0] === "font.size") {
                     return this.commands["font.size"](this.context.text, command[1] ?? "");
+                } else if (command[0] === "font.family") {
+                    return this.commands["font.family"](this.context.text, command[1] ?? "");
                 } else {
                     const commandFn = this.commands[command[0]];
                     if (!commandFn) throw new UnknownCommandError(command[0]);

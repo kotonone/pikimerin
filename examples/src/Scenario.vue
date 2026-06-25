@@ -10,8 +10,7 @@
 
 <script lang="ts" setup>
 import { onMounted, useTemplateRef } from "vue";
-import { Pikimerin, text as textFn } from "@kotonone/pikimerin/src";
-import { createCommand } from "../../src/commands/Command";
+import { Pikimerin, text as textFn, createCommand } from "@kotonone/pikimerin/src";
 
 const scenarioRef = useTemplateRef("scenarioRef");
 const nameRef = useTemplateRef("nameRef")

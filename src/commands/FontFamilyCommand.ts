@@ -4,11 +4,11 @@ export const fontFamily = createCommand(
     {
         family: {
             type: "string",
-            required: true,
+            required: false,
         },
     },
     (context, { family }) => {
-        context.text.style.fontFamily = family;
+        context.text.style.fontFamily = family ?? "";
     },
     ["family"],
 );

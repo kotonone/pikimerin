@@ -4,11 +4,11 @@ export const fontSize = createCommand(
     {
         size: {
             type: "string",
-            required: true,
+            required: false,
         },
     },
     (context, { size }) => {
-        context.text.style.fontSize = size;
+        context.text.style.fontSize = size ?? "";
     },
     ["size"],
 )

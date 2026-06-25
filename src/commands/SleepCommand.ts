@@ -1,25 +1,31 @@
-import { AbortablePromise, wait } from "../utils/Promise";
+import { wait } from "../utils/Promise";
+import { createCommand } from "./Command";
 
-export function sleep(duration: string | number): AbortablePromise<void> {
-    const isNumeric = (value: any): value is number => !isNaN(value);
-
-    if (isNumeric(duration)) {
-        duration = parseFloat(duration as any);
-    } else {
+export const sleep = createCommand(
+    {
+        duration: {
+            type: "string",
+            required: true,
+        },
+    },
+    (_, { duration }) => {
+        let duration_;
         if (/^\d+ ?(ms|msecs?|milliseconds?)$/.test(duration)) {
-            duration = parseFloat(duration) / 1000;
+            duration_ = parseFloat(duration) / 1000;
         } else if (/^\d+ ?(s|secs?|seconds?)$/.test(duration)) {
-            duration = parseFloat(duration);
+            duration_ = parseFloat(duration);
         } else if (/^\d+ ?(m|mins?|minutes?)$/.test(duration)) {
-            duration = parseFloat(duration) * 60;
+            duration_ = parseFloat(duration) * 60;
         } else if (/^\d+ ?(h|hrs?|hours?)$/.test(duration)) {
-            duration = parseFloat(duration) * 60 * 60;
+            duration_ = parseFloat(duration) * 60 * 60;
         } else if (/^\d+ ?(d|days?)$/.test(duration)) {
-            duration = parseFloat(duration) * 60 * 60 * 24;
+            duration_ = parseFloat(duration) * 60 * 60 * 24;
         } else {
             throw new Error("Invalid duration: " + duration);
         }
-    }
 
-    return wait(duration * 1000);
-}
+        return wait(duration_ * 1000);
+    },
+    ["duration"],
+);
+

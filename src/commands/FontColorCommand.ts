@@ -1,15 +1,24 @@
-import type { TextContext } from "../core/Context";
+import { createCommand } from "./Command";
 
-export function fontColor(context: TextContext, color: string): void {
-    if (color.includes("-gradient")) {
-        context.style.color = "";
-        context.style.backgroundImage = color;
-        context.style.backgroundClip = "text";
-        context.style.webkitTextFillColor = "transparent";
-    } else {
-        context.style.color = color;
-        context.style.backgroundImage = "";
-        context.style.backgroundClip = "";
-        context.style.webkitTextFillColor = "";
-    }
-}
+export const fontColor = createCommand(
+    {
+        color: {
+            type: "string",
+            required: true,
+        },
+    },
+    (context, { color }) => {
+        if (color.includes("-gradient")) {
+            context.text.style.color = "";
+            context.text.style.backgroundImage = color;
+            context.text.style.backgroundClip = "text";
+            context.text.style.webkitTextFillColor = "transparent";
+        } else {
+            context.text.style.color = color;
+            context.text.style.backgroundImage = "";
+            context.text.style.backgroundClip = "";
+            context.text.style.webkitTextFillColor = "";
+        }
+    },
+    ["color"],
+);

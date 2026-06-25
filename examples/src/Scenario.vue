@@ -10,7 +10,8 @@
 
 <script lang="ts" setup>
 import { onMounted, useTemplateRef } from "vue";
-import { Pikimerin, text } from "@kotonone/pikimerin/src";
+import { Pikimerin, text as textFn } from "@kotonone/pikimerin/src";
+import { createCommand } from "../../src/commands/Command";
 
 const scenarioRef = useTemplateRef("scenarioRef");
 const nameRef = useTemplateRef("nameRef")
@@ -29,13 +30,30 @@ const script = `
 onMounted(() => {
     const merin = new Pikimerin(script, {
         commands: {
-            name: (name) => {
-                nameRef.value!.textContent = name;
-            },
-            text: (context, t) => {
-                console.log(t);
-                return text(context, t);
-            },
+            name: createCommand(
+                {
+                    name: {
+                        type: "string",
+                        required: true,
+                    },
+                },
+                (_, { name }) => {
+                    nameRef.value!.textContent = name;
+                },
+                ["name"],
+            ),
+            text: createCommand(
+                {
+                    text: {
+                        type: "string",
+                        required: true,
+                    },
+                },
+                (context, { text }) => {
+                    console.log(text);
+                    return textFn.handler(context, { text });
+                }
+            ),
         },
     });
     scenarioRef.value?.querySelector("pikimerin-text")?.appendChild(merin.context.text.container);

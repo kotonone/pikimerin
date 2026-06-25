@@ -1,5 +1,14 @@
-import type { TextContext } from "../core/Context";
+import { createCommand } from "./Command";
 
-export function fontSize(context: TextContext, size: string): void {
-    context.style.fontSize = size;
-}
+export const fontSize = createCommand(
+    {
+        size: {
+            type: "string",
+            required: true,
+        },
+    },
+    (context, { size }) => {
+        context.text.style.fontSize = size;
+    },
+    ["size"],
+)

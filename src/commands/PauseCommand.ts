@@ -1,7 +1,10 @@
 import { AbortablePromise } from "../utils/Promise";
+import { createCommand } from "./Command";
 
-export function pause(): AbortablePromise<void> {
-    return new AbortablePromise<void>((resolve, _reject, signal) => {
+export const pause = createCommand(
+    {},
+    () => new AbortablePromise<void>((resolve, _reject, signal) => {
         signal.onabort = () => resolve();
-    });
-}
+    }),
+    [],
+);

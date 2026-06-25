@@ -1,5 +1,14 @@
-import type { TextContext } from "../core/Context";
+import { createCommand } from "./Command";
 
-export function fontFamily(context: TextContext, family: string): void {
-    context.style.fontFamily = family;
-}
+export const fontFamily = createCommand(
+    {
+        family: {
+            type: "string",
+            required: true,
+        },
+    },
+    (context, { family }) => {
+        context.text.style.fontFamily = family;
+    },
+    ["family"],
+);

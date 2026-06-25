@@ -1,5 +1,9 @@
-import type { TextContext } from "../core/Context";
+import { createCommand } from "./Command";
 
-export function page(context: TextContext): void {
-    context.container.textContent = "";
-}
+export const page = createCommand(
+    {},
+    (context) => {
+        context.text.container.textContent = "";
+    },
+    [],
+);

@@ -21,6 +21,22 @@ export class InvalidArgumentError extends AmeriScriptError {
         super("Invalid argument at command " + command);
     }
 }
+export class ArgumentMissingError extends AmeriScriptError {
+    constructor(command: string, argument: string) {
+        super("Missing argument " + argument + " at command " + command);
+    }
+}
+export class ArgumentTooManyError extends AmeriScriptError {
+    constructor(command: string) {
+        super("Too many arguments at command " + command);
+    }
+}
+/** 引数が二度以上指定された場合のエラー */
+export class ArgumentDuplicatedError extends AmeriScriptError {
+    constructor(command: string, argument: string) {
+        super("Argument " + argument + " is specified multiple times at command " + command);
+    }
+}
 export class UnknownCommandError extends AmeriScriptError {
     constructor(content: string) {
         super("Unknown command: " + content);

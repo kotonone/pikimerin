@@ -1,6 +1,7 @@
 import { getCommandsFromLine, splitArguments } from "../utils/Parse";
-import { Argument, CommandDefinition, HandlerArgument, ParsedCommand } from "../commands/Command";
+import { ParsedCommand } from "../commands/Command";
 import { AmeriScriptError, ArgumentDuplicatedError, ArgumentMissingError, ArgumentTooManyError, IndentError, InvalidArgumentError, UnknownCommandError } from "./Error";
+import type { Argument, CommandDefinition, HandlerArgument } from "../commands/Command";
 
 export class Parser {
     /** コマンド定義のレコード */

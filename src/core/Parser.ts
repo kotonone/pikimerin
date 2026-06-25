@@ -1,5 +1,5 @@
 import { getCommandsFromLine, splitArguments } from "../utils/Parse";
-import { ParsedCommand } from "../commands/Command";
+import { Command } from "../commands/Command";
 import { AmeriScriptError, ArgumentDuplicatedError, ArgumentMissingError, ArgumentTooManyError, IndentError, InvalidArgumentError, UnknownCommandError } from "./Error";
 import type { Argument, CommandDefinition, HandlerArgument } from "../commands/Command";
 
@@ -28,16 +28,16 @@ export class Parser {
      * @param name コマンド名
      * @param args 引数のレコード
      */
-    private createCommand(name: string, args: Record<string, string> = {}): ParsedCommand {
-        return new ParsedCommand(name, this.getCommandDefinition(name), args);
+    private createCommand(name: string, args: Record<string, string> = {}): Command {
+        return new Command(name, this.getCommandDefinition(name), args);
     }
 
     /**
      * コマンドを整理します。
      * @param commands コマンド
      */
-    private mergeCommands(commands: ParsedCommand[]): ParsedCommand[] {
-        const result: ParsedCommand[] = [];
+    private mergeCommands(commands: Command[]): Command[] {
+        const result: Command[] = [];
 
         for (const command of commands) {
             const previousCommand = result.at(-1);
@@ -64,8 +64,8 @@ export class Parser {
      * 複数行にまたがるコマンドをパースします。
      * @param content 文字列
      */
-    private parseContent(content: string): ParsedCommand[] {
-        let commands: ParsedCommand[] = [];
+    private parseContent(content: string): Command[] {
+        let commands: Command[] = [];
 
         const lines = splitArguments(content
             // NOTE: 複数行のコメントの削除
@@ -108,7 +108,7 @@ export class Parser {
      * 行をパースします。
      * @param line 行
      */
-    private parseLine(line: string): ParsedCommand[] {
+    private parseLine(line: string): Command[] {
         const lineWithoutIndent = line
             // NOTE: インデントの削除
             .trimStart();
@@ -120,7 +120,7 @@ export class Parser {
             return [this.parseCommand(lineWithoutIndent)];
         } else {
             // NOTE: 1行コマンドでない場合
-            let results: ParsedCommand[] = [];
+            let results: Command[] = [];
 
             for (const command of getCommandsFromLine(lineWithoutIndent)) {
                 if (command.startsWith("{@")) {
@@ -144,14 +144,14 @@ export class Parser {
      * 単一コマンド形式 `@command arg1 arg2 ...` をパースします。
      * @param content コマンド
      */
-    private parseCommand(content: string): ParsedCommand {
+    private parseCommand(content: string): Command {
         const command = splitArguments(content);
         if (command.length < 1) throw new AmeriScriptError("Internal error");
 
         const name = command[0]!.slice(1);
         const args = command.slice(1);
         const definition = this.getCommandDefinition(name);
-        return new ParsedCommand(name, definition, this.parseArguments(name, definition, args));
+        return new Command(name, definition, this.parseArguments(name, definition, args));
 
         /*
         if (args[0] === "@await") {
@@ -255,7 +255,7 @@ export class Parser {
      * コンテンツをパースします。
      * @param content 文字列
      */
-    public parse(content: string): ParsedCommand[] {
+    public parse(content: string): Command[] {
         return this.parseContent(content);
     }
 }

@@ -1,6 +1,6 @@
 import { text } from "../commands/TextCommand";
 import { Context } from "./Context";
-import type { CommandDefinition, ParsedCommand } from "../commands/Command";
+import type { CommandDefinition, Command } from "../commands/Command";
 import { pause } from "../commands/PauseCommand";
 import { sleep } from "../commands/SleepCommand";
 import { fontSize } from "../commands/FontSizeCommand";
@@ -53,7 +53,7 @@ export class Pikimerin extends EventTarget {
     private readonly parser: Parser;
 
     /** パースされたスクリプト */
-    public readonly script: ReadonlyArray<ParsedCommand>;
+    public readonly script: ReadonlyArray<Command>;
 
     /** 現在進行中の非同期タスク */
     #task: AbortablePromise<any> | null;

@@ -1,7 +1,7 @@
 export { Pikimerin } from "./core/Pikimerin";
 export { Context } from "./core/Context";
 export { Parser } from "./core/Parser";
-export { ParsedCommand } from "./commands/Command";
+export { Command as ParsedCommand } from "./commands/Command";
 export { text } from "./commands/TextCommand";
 export { pause } from "./commands/PauseCommand";
 export { sleep } from "./commands/SleepCommand";

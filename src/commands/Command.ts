@@ -32,8 +32,8 @@ export type HandlerArgument<Arguments extends Record<string, Argument>> =
         [K in keyof Arguments as Arguments[K]["required"] extends false ? K : never]?: ArgumentValue<Arguments[K]>;
     } extends infer O ? { [K in keyof O]: O[K] } : never;
 
-/** パース済みのコマンドの内部表現クラス */
-export class ParsedCommand<Args extends Record<string, Argument> = any> {
+/** コマンドの中間表現クラス */
+export class Command<Args extends Record<string, Argument> = any> {
     /** コマンド定義 */
     #definition: CommandDefinition<Args>;
 

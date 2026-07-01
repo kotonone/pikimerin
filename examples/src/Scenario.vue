@@ -59,7 +59,7 @@ onMounted(() => {
         },
     });
     merin.assets.load("background.webp", "image");
-    scenarioRef.value?.parentElement?.insertBefore(merin.pictureRenderer.canvas, scenarioRef.value);
+    scenarioRef.value?.parentElement?.insertBefore(merin.context.picture.canvas, scenarioRef.value);
     scenarioRef.value?.querySelector("pikimerin-text")?.appendChild(merin.context.text.container);
     window.onclick = () => merin.abort();
 });

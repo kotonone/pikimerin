@@ -6,21 +6,24 @@ import { LAYER_SIZE_AUTO, LAYER_SIZE_MAX } from "../picture/Layer";
 
 /** ピクチャを Canvas 要素に描画するクラス */
 export class PictureRenderer {
-    /** ピクチャ描画キャンバス */
-    public readonly canvas: HTMLCanvasElement;
+    readonly #context: Readonly<PictureContext>;
 
-    #context: Readonly<PictureContext>;
-    #assets: Readonly<Assets>;
-    #rendering: CanvasRenderingContext2D;
+    /** ピクチャ描画キャンバス */
+    readonly #canvas: HTMLCanvasElement;
+    /** ネイティブの描画コンテキスト */
+    readonly #rendering: CanvasRenderingContext2D;
+
+    readonly #assets: Readonly<Assets>;
 
     public constructor(context: Readonly<PictureContext>, assets: Readonly<Assets>) {
-        this.canvas = document.createElement("canvas");
         this.#context = context;
-        this.#assets = assets;
 
-        const renderingContext = this.canvas.getContext("2d");
+        this.#canvas = context.canvas;
+        const renderingContext = this.#canvas.getContext("2d");
         if (!renderingContext) throw new UnsupportedError();
         this.#rendering = renderingContext;
+
+        this.#assets = assets;
     }
 
     /**
@@ -29,12 +32,12 @@ export class PictureRenderer {
      */
     public render(deltaTime: number) {
         // NOTE: Canvas のサイズをコンテナに合わせる
-        const rect = this.canvas.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
+        const rect = this.#canvas.getBoundingClientRect();
+        this.#canvas.width = rect.width;
+        this.#canvas.height = rect.height;
 
         // NOTE: 画面クリア
-        this.#rendering.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.#rendering.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
 
         for (const layer of this.#context.layers.values()) {
             if (!layer.visible || !layer.source) continue;
@@ -48,11 +51,11 @@ export class PictureRenderer {
             if (sourceWidth <= 0 || sourceHeight <= 0) continue;
             const width =
                 layer.width === LAYER_SIZE_AUTO ? sourceWidth :
-                layer.width === LAYER_SIZE_MAX ? this.canvas.width :
+                layer.width === LAYER_SIZE_MAX ? this.#canvas.width :
                 layer.width;
             const height =
                 layer.height === LAYER_SIZE_AUTO ? sourceHeight :
-                layer.height === LAYER_SIZE_MAX ? this.canvas.height :
+                layer.height === LAYER_SIZE_MAX ? this.#canvas.height :
                 layer.height;
             if (width <= 0 || height <= 0) continue;
 
@@ -63,12 +66,5 @@ export class PictureRenderer {
 
         // NOTE: 合成モードをデフォルトに戻す
         this.#rendering.globalCompositeOperation = "source-over";
-    }
-
-    /** JSON 形式にシリアライズします。 */
-    public toJSON() {
-        return {
-            layers: Object.fromEntries(this.#context.layers.entries()),
-        };
     }
 }

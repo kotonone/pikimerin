@@ -70,7 +70,7 @@ export interface PikimerinInit {
 }
 
 /** Pikimerin メインクラス */
-export class Pikimerin extends EventTarget {
+export class Pikimerin {
     /** コンテキスト */
     public readonly context: Context;
 
@@ -84,14 +84,12 @@ export class Pikimerin extends EventTarget {
     public readonly assets: Readonly<Assets>;
 
     /** ピクチャを Canvas 要素に描画するクラス */
-    public readonly pictureRenderer: Readonly<PictureRenderer>;
+    private readonly pictureRenderer: Readonly<PictureRenderer>;
 
     /** 現在進行中の非同期タスク */
     #task: AbortablePromise<any> | null;
 
     public constructor(script: string, init?: Partial<PikimerinInit>) {
-        super();
-
         this.context = init?.context ?? new Context();
         this.parser = new Parser({
             ...DEFAULT_COMMAND_SET,

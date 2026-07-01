@@ -9,8 +9,13 @@ import { fontFamily } from "../commands/FontFamilyCommand";
 import { page } from "../commands/PageCommand";
 import { AbortablePromise } from "../utils/Promise";
 import { Parser } from "./Parser";
-import { Renderer } from "./picture/Renderer";
 import { CommandRangeError } from "./Error";
+import { pictureAdd } from "../commands/PictureAddCommand";
+import { pictureRemove } from "../commands/PictureRemoveCommand";
+import { pictureShow } from "../commands/PictureShowCommand";
+import { pictureHide } from "../commands/PictureHideCommand";
+import { Assets } from "./Assets";
+import { PictureRenderer } from "./renderer/PictureRenderer";
 
 export enum SkipType {
     /** スキップを行わない */
@@ -34,6 +39,26 @@ const DEFAULT_COMMAND_SET: Record<string, CommandDefinition> = {
     "font.color": fontColor,
     "font.size": fontSize,
     "font.family": fontFamily,
+    "picture.add": pictureAdd,
+    "picture.remove": pictureRemove,
+    "picture.show": pictureShow,
+    "picture.hide": pictureHide,
+    // アニメーション（トゥイーン）
+    "picture.move": text, // [name=]bg [x=]200 [y=]100 duration=1000 easing=easeOutQuad
+    "picture.scale": text, // [name=]bg [x=]1.2 [y=]1.2 duration=500
+    "picture.rotate": text, // [name=]bg angle=15 duration=300
+    "picture.opacity": text, // [name=]bg value=0.5 duration=800
+    "picture.order": text, // [name=]bg [shift=]1
+    // 複合トランジション
+    "picture.transition": text, // out=bg01 in=bg02 effect=fade duration=1200
+    "picture.crossfade": text, // name1=bg01 name2=bg02 opacity=0.5 duration=1000
+    // キャラクター表情（スプライトシート／アトラス）
+    "picture.expression": text, // char=heroine emotion=smile
+    // 画面エフェクト
+    "screen.shake": text, // intensity=5 duration=400
+    "screen.flash": text, // color=white duration=200
+    "screen.fadeIn": text, // duration=1000
+    "screen.fadeOut": text, // duration=1000
 };
 
 export interface PikimerinInit {
@@ -50,16 +75,19 @@ export class Pikimerin extends EventTarget {
     public readonly context: Context;
 
     /** パーサー */
-    private readonly parser: Parser;
+    private readonly parser: Readonly<Parser>;
 
     /** パースされたスクリプト */
     public readonly script: ReadonlyArray<Command>;
 
+    /** アセット */
+    public readonly assets: Readonly<Assets>;
+
+    /** ピクチャを Canvas 要素に描画するクラス */
+    public readonly pictureRenderer: Readonly<PictureRenderer>;
+
     /** 現在進行中の非同期タスク */
     #task: AbortablePromise<any> | null;
-
-    /** ピクチャレンダラー */
-    #renderer: Renderer;
 
     public constructor(script: string, init?: Partial<PikimerinInit>) {
         super();
@@ -70,12 +98,25 @@ export class Pikimerin extends EventTarget {
             ...init?.commands,
         });
         this.script = this.parser.parse(script);
+        this.assets = new Assets();
+        this.pictureRenderer = new PictureRenderer(this.context.picture, this.assets);
         this.#task = null;
-        this.#renderer = new Renderer(this.context.picture);
+
+        // NOTE: picture.add コマンドで指定されたアセットを事前に追加
+        // TODO: 改善したい気持ちがある
+        for (const command of this.script) {
+            if (command.name === "picture.add" && typeof command.args["file"] === "string") {
+                this.assets.add(command.args["file"]);
+            }
+        }
 
         // TODO: ユーザー側でレンダリングできるようにする？
-        const render = () => {
-            this.#renderer.render();
+        let previousTime = performance.now();
+        const render: FrameRequestCallback = (time) => {
+            const deltaTime = time - previousTime;
+            previousTime = time;
+
+            this.pictureRenderer.render(deltaTime);
             requestAnimationFrame(render);
         };
         requestAnimationFrame(render);

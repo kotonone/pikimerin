@@ -1,11 +1,14 @@
-import { getBounds } from "../../utils/Image";
+/** レイヤーのサイズとして、そのソース画像のサイズを利用する */
+export const LAYER_SIZE_AUTO = -1;
+/** レイヤーのサイズとして、キャンバスのサイズを利用する */
+export const LAYER_SIZE_MAX = -2;
 
 /** ピクチャレイヤー */
 export class Layer {
     /** レイヤー名 */
     public readonly name: string;
-    /** レイヤーに描画する画像 */
-    public source: CanvasImageSource | null;
+    /** 描画する画像ファイルへのパス */
+    public source: string | null;
     /** X座標（px） */
     public x: number;
     /** Y座標（px） */
@@ -17,10 +20,11 @@ export class Layer {
     /** 合成モード */
     public blendMode: GlobalCompositeOperation;
 
+    /** レイヤーの可視状態 */
     #visible: boolean;
 
     /**
-     * @param source 描画画像
+     * @param source 描画する画像
      * @param x X座標
      * @param y Y座標
      * @param width 幅
@@ -29,11 +33,11 @@ export class Layer {
      * @param blendMode 合成モード
      */
     public constructor(
-        source: CanvasImageSource | null = null,
+        source: string | null = null,
         x: number = 0,
         y: number = 0,
-        width: number = -1,
-        height: number = -1,
+        width: number = LAYER_SIZE_AUTO,
+        height: number = LAYER_SIZE_AUTO,
         name: string = "Layer",
         blendMode: GlobalCompositeOperation = "source-over"
     ) {
@@ -42,24 +46,9 @@ export class Layer {
         this.source = source;
         this.x = x;
         this.y = y;
-        this.width = source && width < 0 ? getBounds(source).width : width;
-        this.height = source && width < 0 ? getBounds(source).height : height;
+        this.width = width;
+        this.height = height;
         this.blendMode = blendMode;
-    }
-
-    /** このレイヤーをレンダリングする際の、画像ソースにおける位置・大きさを取得します。 */
-    public get sourceBounds(): { x: number; y: number; width: number; height: number; } {
-        if (!this.source) return { x: 0, y: 0, width: 0, height: 0 };
-        const bounds = getBounds(this.source);
-        const scale = Math.max(this.width / bounds.width, this.height / bounds.height);
-        const displayWidth = bounds.width * scale;
-        const displayHeight = bounds.height * scale;
-        return {
-            x: this.x - (displayWidth - this.width) / 2,
-            y: this.y - (displayHeight - this.height) / 2,
-            width: displayWidth,
-            height: displayHeight,
-        };
     }
 
     /** レイヤーの可視状態 */

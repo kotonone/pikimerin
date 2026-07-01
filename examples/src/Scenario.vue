@@ -16,9 +16,12 @@ const scenarioRef = useTemplateRef("scenarioRef");
 const nameRef = useTemplateRef("nameRef")
 
 const script = `
+@picture.add name=bg1 file=background.webp x=100 y=100 width=512 height=256
+
 @name なまえ1
 って、それってただの睡眠不足でしょ？\\n今日はお休みだし私ゆっくり寝てたいな。
 
+@picture.remove
 @name なまえ2
 不健康よ！\\nそんなんでいいと思ってるわけ？
 
@@ -55,6 +58,8 @@ onMounted(() => {
             ),
         },
     });
+    merin.assets.load("background.webp", "image");
+    scenarioRef.value?.parentElement?.insertBefore(merin.pictureRenderer.canvas, scenarioRef.value);
     scenarioRef.value?.querySelector("pikimerin-text")?.appendChild(merin.context.text.container);
     window.onclick = () => merin.abort();
 });
@@ -68,6 +73,12 @@ onMounted(() => {
     src: url("/font/Nosutaru-dotMPlusH-10-Regular.ttf");
 }
 
+canvas {
+    position: absolute;
+    inset: 0px;
+    width: 100%;
+    height: 100%;
+}
 #scenario {
     --background-color: #00000080;
 

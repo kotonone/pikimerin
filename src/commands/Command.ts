@@ -50,7 +50,7 @@ export class Command<Args extends Record<string, Argument> = any> {
     }
 
     /** コマンドを実行します。 */
-    public execute(context: Context) {
+    public execute(context: Readonly<Context>) {
         return this.#definition.handler(context, this.args);
     }
 }
@@ -61,7 +61,7 @@ export interface CommandDefinition<Args extends Record<string, Argument> = any> 
     args: Args;
 
     /** コマンドの実行関数 */
-    handler: (context: Context, args: HandlerArgument<Args>) => void | Promise<void>;
+    handler: (context: Readonly<Context>, args: HandlerArgument<Args>) => void | Promise<void>;
 
     /** キーワードの順番を指定する配列 */
     keywordOrder?: (keyof Args)[];
@@ -75,7 +75,7 @@ export interface CommandDefinition<Args extends Record<string, Argument> = any> 
  */
 export function createCommand<const Args extends Record<string, Argument>>(
     args: Args,
-    handler: (context: Context, args: HandlerArgument<Args>) => void | Promise<void>,
+    handler: (context: Readonly<Context>, args: HandlerArgument<Args>) => void | Promise<void>,
     keywordOrder?: (keyof Args)[]
 ): CommandDefinition<Args> {
     return { args, handler, keywordOrder };

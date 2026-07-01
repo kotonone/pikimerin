@@ -1,6 +1,8 @@
 export { Pikimerin } from "./core/Pikimerin";
 export { Context } from "./core/Context";
 export { TextContext } from "./core/context/TextContext";
+export { PictureContext } from "./core/context/PictureContext";
+export { PictureRenderer } from "./core/renderer/PictureRenderer";
 export { Parser } from "./core/Parser";
 export { Command, createCommand } from "./commands/Command";
 export { text } from "./commands/TextCommand";
@@ -9,9 +11,10 @@ export { sleep } from "./commands/SleepCommand";
 export { page } from "./commands/PageCommand";
 export { fontColor } from "./commands/FontColorCommand";
 export { fontSize } from "./commands/FontSizeCommand";
+export { Assets } from "./core/Assets";
 export { Layer } from "./core/picture/Layer";
-export { Renderer } from "./core/picture/Renderer";
 export { AbortablePromise } from "./utils/Promise";
+export * from "./core/Error";
 
 export type { PikimerinInit } from "./core/Pikimerin";
 export type { CommandDefinition } from "./commands/Command";

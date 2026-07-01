@@ -1,5 +1,5 @@
 import { TextContext } from "./context/TextContext";
-import { Layer } from "./picture/Layer";
+import { PictureContext } from "./context/PictureContext";
 
 /** シナリオの再生時における環境情報 */
 export class Context {
@@ -17,12 +17,7 @@ export class Context {
 
     public constructor() {
         this.text = new TextContext(20);
-
-        this.picture = {
-            canvas: document.createElement("canvas"),
-            layers: [],
-        };
-
+        this.picture = new PictureContext();
         this.data = {};
         this.stack = [0];
     }
@@ -40,20 +35,9 @@ export class Context {
     public toJSON() {
         return {
             text: this.text.toJSON(),
-            picture: {
-                layers: this.picture.layers,
-            },
+            picture: this.picture.toJSON(),
             data: this.data,
             stack: this.stack,
         };
     }
-}
-
-/** ピクチャが要求するコンテキスト */
-export interface PictureContext {
-    /** ピクチャ描画キャンバス */
-    canvas: HTMLCanvasElement;
-
-    /** レイヤー */
-    layers: Layer[];
 }

@@ -37,6 +37,18 @@ export class ArgumentDuplicatedError extends AmeriScriptError {
         super("Argument " + argument + " is specified multiple times at command " + command);
     }
 }
+/** 不明なレイヤーが指定された場合のエラー */
+export class UnknownLayerError extends AmeriScriptError {
+    constructor(name: string) {
+        super("Unknown layer: " + name);
+    }
+}
+/** 不明なアセットがしてされた場合のエラー */
+export class UnknownAssetError extends AmeriScriptError {
+    constructor(path: string) {
+        super("Unknown asset: " + path);
+    }
+}
 export class UnknownCommandError extends AmeriScriptError {
     constructor(content: string) {
         super("Unknown command: " + content);
@@ -45,5 +57,10 @@ export class UnknownCommandError extends AmeriScriptError {
 export class CommandRangeError extends AmeriScriptError {
     constructor() {
         super("Command range exceeded");
+    }
+}
+export class UnsupportedError extends AmeriScriptError {
+    constructor() {
+        super("Unsupported feature");
     }
 }

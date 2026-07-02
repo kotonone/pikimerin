@@ -126,8 +126,10 @@ export class Pikimerin {
      * エンジンを開始します。
      */
     private async run() {
+        console.debug(this.script);
         while (true) {
             const command = this.script[this.context.pc];
+            console.debug(this.context.pc, command);
             if (!command) throw new CommandRangeError();
 
             const result = command.execute(this.context);

@@ -27,9 +27,10 @@ export class Parser {
      * コマンドを作成します。
      * @param name コマンド名
      * @param args 引数のレコード
+     * @param indent コマンドのインデント深さ
      */
-    private createCommand(name: string, args: Record<string, string> = {}): Command {
-        return new Command(name, this.getCommandDefinition(name), args);
+    private createCommand(name: string, args: Record<string, string>, indent: number): Command {
+        return new Command(name, this.getCommandDefinition(name), args, indent);
     }
 
     /**
@@ -41,12 +42,18 @@ export class Parser {
 
         for (const command of commands) {
             const previousCommand = result.at(-1);
-            if (command.name === "text" && previousCommand && previousCommand.name === "text") {
+
+            if (!previousCommand || command.indent !== previousCommand.indent) {
+                result.push(command);
+                continue;
+            }
+
+            if (previousCommand && command.name === "text" && previousCommand.name === "text") {
                 // NOTE: テキストコマンドが連続するものは連結
                 const previousText = previousCommand.args["text"]!;
                 result.pop();
-                result.push(this.createCommand("text", { text: previousText + (command.args["text"] as string) }));
-            } else if (command.name === "page" && previousCommand && previousCommand.name === "text" && previousCommand.args["text"] === "\n") {
+                result.push(this.createCommand("text", { text: previousText + (command.args["text"] as string) }, command.indent));
+            } else if (previousCommand && command.name === "page" && previousCommand.name === "text" && previousCommand.args["text"] === "\n") {
                 // NOTE: page 直前の \n は不要なので削除
                 result.pop();
                 result.push(command);
@@ -98,7 +105,7 @@ export class Parser {
 
             if (!Number.isSafeInteger(currentIndent)) throw new IndentError(i);
 
-            commands.push(...this.parseLine(line));
+            commands.push(...this.parseLine(line, currentIndent));
         }
 
         return this.mergeCommands(commands);
@@ -108,16 +115,16 @@ export class Parser {
      * 行をパースします。
      * @param line 行
      */
-    private parseLine(line: string): Command[] {
+    private parseLine(line: string, indent: number = 0): Command[] {
         const lineWithoutIndent = line
             // NOTE: インデントの削除
             .trimStart();
 
         if (lineWithoutIndent === "") {
-            return [this.createCommand("text", { text: "\n" })];
+            return [this.createCommand("text", { text: "\n" }, indent)];
         } else if (lineWithoutIndent.startsWith("@")) {
             // NOTE: 1行コマンドだった場合
-            return [this.parseCommand(lineWithoutIndent)];
+            return [this.parseCommand(lineWithoutIndent, indent)];
         } else {
             // NOTE: 1行コマンドでない場合
             let results: Command[] = [];
@@ -125,16 +132,16 @@ export class Parser {
             for (const command of getCommandsFromLine(lineWithoutIndent)) {
                 if (command.startsWith("{@")) {
                     // NOTE: インラインコマンドはパースに回す
-                    results.push(this.parseCommand(command.slice(1, -1)));
+                    results.push(this.parseCommand(command.slice(1, -1), indent));
                 } else {
                     // NOTE: インラインでないものは文字列としてテキストで解釈
                     results.push(this.createCommand("text", { text: command
                         .replaceAll("\\@", "@")
-                    }));
+                    }, indent));
                 }
             }
 
-            results.push(this.createCommand("pause"), this.createCommand("text", { text: "\n" }));
+            results.push(this.createCommand("pause", {}, indent), this.createCommand("text", { text: "\n" }, indent));
 
             return results;
         }
@@ -142,16 +149,17 @@ export class Parser {
 
     /**
      * 単一コマンド形式 `@command arg1 arg2 ...` をパースします。
-     * @param content コマンド
+     * @param content コマンド文字列
+     * @param indent コマンドのインデント深さ
      */
-    private parseCommand(content: string): Command {
+    private parseCommand(content: string, indent: number): Command {
         const command = splitArguments(content);
         if (command.length < 1) throw new AmeriScriptError("Internal error");
 
         const name = command[0]!.slice(1);
         const args = command.slice(1);
         const definition = this.getCommandDefinition(name);
-        return new Command(name, definition, this.parseArguments(name, definition, args));
+        return new Command(name, definition, this.parseArguments(name, definition, args), indent);
 
         /*
         if (args[0] === "@await") {

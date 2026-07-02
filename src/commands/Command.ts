@@ -34,19 +34,24 @@ export type HandlerArgument<Arguments extends Record<string, Argument>> =
 
 /** コマンドの中間表現クラス */
 export class Command<Args extends Record<string, Argument> = any> {
-    /** コマンド定義 */
-    #definition: CommandDefinition<Args>;
-
     /** コマンド名 */
     public readonly name: string;
 
     /** コマンドの引数 */
-    public args: HandlerArgument<Args>;
+    public readonly args: Readonly<HandlerArgument<Args>>;
 
-    public constructor(name: string, definition: CommandDefinition<Args>, args: HandlerArgument<Args>) {
+    /** コマンドのインデント深さ */
+    public readonly indent: number;
+
+    /** コマンド定義 */
+    #definition: CommandDefinition<Args>;
+
+    public constructor(name: string, definition: CommandDefinition<Args>, args: HandlerArgument<Args>, indent: number = 0) {
         this.name = name;
-        this.#definition = definition;
         this.args = args;
+        this.indent = indent;
+
+        this.#definition = definition;
     }
 
     /** コマンドを実行します。 */
@@ -61,7 +66,7 @@ export interface CommandDefinition<Args extends Record<string, Argument> = any> 
     args: Args;
 
     /** コマンドの実行関数 */
-    handler: (context: Readonly<Context>, args: HandlerArgument<Args>) => void | Promise<void>;
+    handler: (context: Readonly<Context>, args: Readonly<HandlerArgument<Args>>) => void | Promise<void>;
 
     /** キーワードの順番を指定する配列 */
     keywordOrder?: (keyof Args)[];
@@ -75,7 +80,7 @@ export interface CommandDefinition<Args extends Record<string, Argument> = any> 
  */
 export function createCommand<const Args extends Record<string, Argument>>(
     args: Args,
-    handler: (context: Readonly<Context>, args: HandlerArgument<Args>) => void | Promise<void>,
+    handler: (context: Readonly<Context>, args: Readonly<HandlerArgument<Args>>) => void | Promise<void>,
     keywordOrder?: (keyof Args)[]
 ): CommandDefinition<Args> {
     return { args, handler, keywordOrder };

@@ -52,7 +52,6 @@ export function splitArguments(content: string, splitter: string = SPLITTER_CHAR
             } else {
                 escapes.push(s.slice(1));
             }
-            console.log(escapes.at(-1));
             return "\\e" + (escapes.length - 1).toString() + ";";
         })
 

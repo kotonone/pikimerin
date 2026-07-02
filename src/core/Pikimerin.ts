@@ -1,6 +1,6 @@
 import { text } from "../commands/TextCommand";
 import { Context } from "./Context";
-import type { CommandDefinition, Command } from "../commands/Command";
+import type { CommandDefinition } from "../commands/Command";
 import { pause } from "../commands/PauseCommand";
 import { sleep } from "../commands/SleepCommand";
 import { fontSize } from "../commands/FontSizeCommand";
@@ -14,6 +14,7 @@ import { pictureAdd } from "../commands/PictureAddCommand";
 import { pictureRemove } from "../commands/PictureRemoveCommand";
 import { pictureShow } from "../commands/PictureShowCommand";
 import { pictureHide } from "../commands/PictureHideCommand";
+import { conditionIf } from "../commands/IfCommand";
 import { Assets } from "./Assets";
 import { PictureRenderer } from "./renderer/PictureRenderer";
 
@@ -59,6 +60,7 @@ const DEFAULT_COMMAND_SET: Record<string, CommandDefinition> = {
     "screen.flash": text, // color=white duration=200
     "screen.fadeIn": text, // duration=1000
     "screen.fadeOut": text, // duration=1000
+    "if": conditionIf,
 };
 
 export interface PikimerinInit {
@@ -77,9 +79,6 @@ export class Pikimerin {
     /** パーサー */
     private readonly parser: Readonly<Parser>;
 
-    /** パースされたスクリプト */
-    public readonly script: ReadonlyArray<Command>;
-
     /** アセット */
     public readonly assets: Readonly<Assets>;
 
@@ -90,19 +89,18 @@ export class Pikimerin {
     #task: AbortablePromise<any> | null;
 
     public constructor(script: string, init?: Partial<PikimerinInit>) {
-        this.context = init?.context ?? new Context();
         this.parser = new Parser({
             ...DEFAULT_COMMAND_SET,
             ...init?.commands,
         });
-        this.script = this.parser.parse(script);
+        this.context = init?.context ?? new Context(this.parser.parse(script));
         this.assets = new Assets();
         this.pictureRenderer = new PictureRenderer(this.context.picture, this.assets);
         this.#task = null;
 
         // NOTE: picture.add コマンドで指定されたアセットを事前に追加
         // TODO: 改善したい気持ちがある
-        for (const command of this.script) {
+        for (const command of this.context.script) {
             if (command.name === "picture.add" && typeof command.args["file"] === "string") {
                 this.assets.add(command.args["file"]);
             }
@@ -126,9 +124,9 @@ export class Pikimerin {
      * エンジンを開始します。
      */
     private async run() {
-        console.debug(this.script);
+        console.debug(this.context.script);
         while (true) {
-            const command = this.script[this.context.pc];
+            const command = this.context.script[this.context.pc];
             console.debug(this.context.pc, command);
             if (!command) throw new CommandRangeError();
 

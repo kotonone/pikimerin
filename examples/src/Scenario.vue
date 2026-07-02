@@ -27,6 +27,18 @@ const script = `
 
 @name なまえ1
 お姉さんみたいなこと言うね。
+
+@name system
+aaaaaaaaaaaaaaaaa
+
+bbbbbbbbbbbbbbbbb
+
+@if
+    cccccccccccccccccccc
+
+    dddddddddddddddddddd
+
+eeeeeeeeeeeeeee
 `.trim();
 
 onMounted(() => {
@@ -51,9 +63,9 @@ onMounted(() => {
                         required: true,
                     },
                 },
-                (context, { text }) => {
+                function (context, { text }) {
                     console.log(text);
-                    return textFn.handler(context, { text });
+                    return textFn.handler.call(this, context, { text });
                 }
             ),
         },

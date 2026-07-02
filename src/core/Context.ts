@@ -1,5 +1,6 @@
 import { TextContext } from "./context/TextContext";
 import { PictureContext } from "./context/PictureContext";
+import { Command } from "../commands/Command";
 
 /** シナリオの再生時における環境情報 */
 export class Context {
@@ -9,15 +10,19 @@ export class Context {
     /** ピクチャコンテキスト */
     public picture: PictureContext;
 
+    /** パースされたスクリプト */
+    public readonly script: ReadonlyArray<Command>;
+
     /** ユーザーデータ */
     public data: Record<string, string | number | boolean | undefined | null>;
 
     /** プログラムカウンタのスタック */
     private stack: number[];
 
-    public constructor() {
+    public constructor(script: ReadonlyArray<Command>) {
         this.text = new TextContext(20);
         this.picture = new PictureContext();
+        this.script = script;
         this.data = {};
         this.stack = [0];
     }

@@ -21,7 +21,7 @@ const script = `
 @name なまえ1
 って、それってただの睡眠不足でしょ？\\n今日はお休みだし私ゆっくり寝てたいな。
 
-@picture.remove
+@picture.remove bg1
 @name なまえ2
 不健康よ！\\nそんなんでいいと思ってるわけ？
 
